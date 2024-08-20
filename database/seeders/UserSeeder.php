@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'code' => '0001',
             'name' => 'Airi Satou',
             'email' => 'encargado@xyzboutique.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'position' => 'Encargado',
             'phone' => '+519'.random_int(10000000, 99999999),
         ]);
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'code' => '0002',
             'name' => 'Ashton Cox',
             'email' => 'vendedor1@xyzboutique.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'position' => 'Vendedor',
             'phone' => '+519'.random_int(10000000, 99999999),
         ]);
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
             'code' => '0003',
             'name' => 'Yuri Berry',
             'email' => 'vendedor2@xyzboutique.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'position' => 'Vendedor',
             'phone' => '+519'.random_int(10000000, 99999999),
         ]);
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
             'code' => '0004',
             'name' => 'Bruno Nash',
             'email' => 'repartidor1@xyzboutique.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'position' => 'Repartidor',
             'phone' => '+519'.random_int(10000000, 99999999),
         ]);
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
             'code' => '0005',
             'name' => 'Paul Byrd',
             'email' => 'repartidor2@xyzboutique.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'position' => 'Repartidor',
             'phone' => '+519'.random_int(10000000, 99999999),
         ]);
