@@ -2,6 +2,7 @@
 
 ## Iniciar Proyecto
 -  Cargar Migraciones y Seeder : php artisan migrate:fresh --seed
+-  Generar LLave Secreta:  php artisan jwt:secret
 
 
 ## Paquetes Instalados
