@@ -35,5 +35,7 @@ Route::group([
     Route::prefix('order')
         ->group(function () {
             Route::post('create', [OrderController::class, 'create']);
+            Route::post('show', [OrderController::class, 'show']);
+            Route::post('update', [OrderController::class, 'update']);
         });
 });

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderHistory;
 use App\Models\Product;
+use App\Models\Status;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Testing\Fakes\Fake;
@@ -29,9 +30,91 @@ class OrderRepository implements OrderRepositoryInterface
         }
     }
 
+    public function show($nro_pedido)
+    {
+        return $this->info($nro_pedido);
+    }
+
+    public function update(array $data)
+    {
+        $data = (object) $data;
+
+        $now = Carbon::now();
+
+        $order = Order::where('nro_pedido', $data->nro_pedido)->first();
+        if (!$order) {
+            return 'Nro de Pedido no Valido';
+        }
+
+        $estado = Status::where('id', $data->estado_id)->first();
+
+        if (!$estado) {
+            return 'Estado No Valido';
+        }
+
+        if ($this->maxStatus()  == $order->status_id) {
+            return 'El Pedido se Encuentra Cerrado';
+        }
+
+
+        if ($order->status_id ==  $data->estado_id) {
+            return 'El Estado Tiene que ser diferente al inicial.';
+        }
+
+        $user = User::where('id', $data->user_id)->first();
+        if (!$user) {
+            return 'El Usuario NO existe';
+        }
+
+        if (!$user->hasRole([2,3,4])) {
+            return 'El Id de Usuario debe ser del tipo Vendedor, Delivery o Repartidor';
+        }
+
+
+        switch ($data->estado_id) {
+            case 2:
+                $order->update([
+                    'fecha_recepcion' =>$now,
+                    'status_id' => 2
+                ]);
+
+                break;
+            case 3:
+                $order->update([
+                    'fecha_despacho' =>$now,
+                    'status_id' => 3
+                ]);
+                break;
+            case 4:
+                $order->update([
+                    'fecha_entrega' =>$now,
+                    'status_id' => 4
+                ]);
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        OrderHistory::create([
+            'status_id' => $data->estado_id,
+            'order_id' => $order->id,
+            'user_id' => $data->user_id,
+            'fecha_registro' => $now
+        ]);
+
+        return $this->info($data->nro_pedido);
+    }
+
     private function correlativo()
     {
-        return Order::count();
+        return Carbon::now()->format('Ym-') . Order::count() + 1;
+    }
+
+
+    private function maxStatus()
+    {
+        return Status::max('id');
     }
 
     private function validate($user_id)
@@ -41,7 +124,7 @@ class OrderRepository implements OrderRepositoryInterface
             return 'El Vendedor No existe';
         }
 
-        if( !$user->hasRole(2) ){
+        if (!$user->hasRole(2)) {
             return 'El Id de Usuario debe ser del tipo Vendedor';
         }
 
@@ -50,7 +133,7 @@ class OrderRepository implements OrderRepositoryInterface
 
     private function store($data)
     {
-        $nro_pedido =  Carbon::now()->format('Ym-') . $this->correlativo() + 1;
+        $nro_pedido =  $this->correlativo();
         $details =  $data->details;
 
         $now = Carbon::now();
@@ -88,11 +171,11 @@ class OrderRepository implements OrderRepositoryInterface
             'fecha_registro' => $now
         ]);
 
-        return $this->info($order->id);
+        return $this->info($order->nro_pedido);
     }
 
 
-    private function info($id)
+    private function info($nro_pedido)
     {
 
         $order = Order::selectRaw("
@@ -112,7 +195,7 @@ class OrderRepository implements OrderRepositoryInterface
             ->join('users', function ($join) {
                 $join->on('orders.user_id', '=', 'users.id');
             })
-            ->where('orders.id', $id)
+            ->where('orders.nro_pedido', $nro_pedido)
             ->get()
             ->map(function ($item) {
 

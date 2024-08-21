@@ -22,7 +22,27 @@ class OrderController extends Controller
         return response()->json([
             'code' => 0,
             'message' => 'success',
-            'data' => $order
+            'response' => $order
+        ], 200);
+    }
+
+    public function show(Request $request)
+    {   
+        $order = $this->orderRepository->show($request->nro_pedido);
+        return response()->json([
+            'code' => 0,
+            'message' => 'success',
+            'response' => $order
+        ], 200);
+    }
+
+    public function update(Request $request)
+    {   
+        $order = $this->orderRepository->update($request->toArray());
+        return response()->json([
+            'code' => 0,
+            "message" =>'success',
+            'response' => $order
         ], 200);
     }
 }
