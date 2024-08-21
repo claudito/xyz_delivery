@@ -61,6 +61,10 @@ class OrderRepository implements OrderRepositoryInterface
             return 'El Estado Tiene que ser diferente al inicial.';
         }
 
+        if ($data->estado_id > $order->status_id) {
+            return 'EL Pedido no puede ser actualizado a un nivel anterior';
+        }
+
         $user = User::where('id', $data->user_id)->first();
         if (!$user) {
             return 'El Usuario NO existe';
