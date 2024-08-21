@@ -15,4 +15,8 @@ class OrderHistory extends Model
         'status_id',
         'fecha_registro'
     ];
+
+    protected $casts = [
+        'fecha_registro' => 'datetime:d/m/Y H:i:s',
+    ];
 }

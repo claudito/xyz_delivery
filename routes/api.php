@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +27,13 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('login', [ AuthController::class, 'login']);
-    Route::post('me', [ AuthController::class, 'me']);
-    Route::post('logout', [ AuthController::class, 'logout']);
-    Route::post('refresh', [ AuthController::class, 'refresh']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('me', [AuthController::class, 'me']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+
+    Route::prefix('order')
+        ->group(function () {
+            Route::post('create', [OrderController::class, 'create']);
+        });
 });

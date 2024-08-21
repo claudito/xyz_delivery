@@ -18,8 +18,11 @@ return new class extends Migration
             $table->dateTime('fecha_recepcion')->nullable();
             $table->dateTime('fecha_despacho')->nullable();
             $table->dateTime('fecha_entrega')->nullable();
-            $table->unsignedBigInteger('status_id');
+            $table->unsignedBigInteger('status_id')->default(1);
             $table->foreign('status_id')->references('id')->on('statuses');
+            $table->unsignedBigInteger('user_id')->default(1);
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->text('comentario')->nullable();
             $table->timestamps();
         });
     }

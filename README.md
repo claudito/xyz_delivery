@@ -3,6 +3,7 @@
 ## Iniciar Proyecto
 -  Cargar Migraciones y Seeder : php artisan migrate:fresh --seed
 -  Generar LLave Secreta:  php artisan jwt:secret
+-  Cargar Ruta de Test : php artisan serve --host=127.0.0.1 --port=8000
 
 
 ## Paquetes Instalados

@@ -12,6 +12,15 @@ class Order extends Model
     protected $fillable = [
         'nro_pedido',
         'fecha_pedido',
-        'status_id'
+        'status_id',
+        'comentario',
+        'user_id'
+    ];
+
+    protected $casts = [
+        'fecha_pedido' => 'datetime:d/m/Y H:i:s',
+        'fecha_recepcion' => 'datetime:d/m/Y H:i:s',
+        'fecha_despacho' => 'datetime:d/m/Y H:i:s',
+        'fecha_entrega' => 'datetime:d/m/Y H:i:s',
     ];
 }
